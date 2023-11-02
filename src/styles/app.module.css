@@ -1,0 +1,15 @@
+.mainContainer {
+}
+
+.innerContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.lowerContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.routesContainer {
+}
