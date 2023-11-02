@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/react-frontend/static/css/main.ec13a010.css",
-    "main.js": "/react-frontend/static/js/main.d02c2d35.js",
+    "main.js": "/react-frontend/static/js/main.d4fb049b.js",
     "static/js/787.cda612ba.chunk.js": "/react-frontend/static/js/787.cda612ba.chunk.js",
     "static/media/logoipsum-297.svg": "/react-frontend/static/media/logoipsum-297.16875bef18293ce9650e9b0176231b69.svg",
     "index.html": "/react-frontend/index.html",
     "static/media/hamburger.svg": "/react-frontend/static/media/hamburger.3d6d4baec351993d5d8e27e1e8685185.svg",
     "main.ec13a010.css.map": "/react-frontend/static/css/main.ec13a010.css.map",
-    "main.d02c2d35.js.map": "/react-frontend/static/js/main.d02c2d35.js.map",
+    "main.d4fb049b.js.map": "/react-frontend/static/js/main.d4fb049b.js.map",
     "787.cda612ba.chunk.js.map": "/react-frontend/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ec13a010.css",
-    "static/js/main.d02c2d35.js"
+    "static/js/main.d4fb049b.js"
   ]
 }
