@@ -24,7 +24,7 @@ const Navbar = (props) => {
     <nav className={classes.navbar}>
       <div className={classes.container}>
         <div className={classes.logo}>
-          <NavLink to="/">
+          <NavLink to="/react-frontend">
             <Brand />
           </NavLink>
         </div>

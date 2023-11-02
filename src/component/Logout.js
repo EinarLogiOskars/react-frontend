@@ -8,7 +8,7 @@ const Logout = () => {
                 <div>Logged out!</div>
             </div>
                 <p className={classes.ptag}>You have successfully logged out.</p>
-                <NavLink to="/">Go to homepage.</NavLink>
+                <NavLink to="/react-frontend">Go to homepage.</NavLink>
         </div>
 
     )
