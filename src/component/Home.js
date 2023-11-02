@@ -21,7 +21,12 @@ const Home = () => {
                 <div>Welcome</div>
             </div>
             <div className={classes.contentContainer}>
-                <p className={classes.ptag}>This is website is a demo project I created to learn React.</p>
+                <p className={classes.ptag}>This is website is a demo project I created to learn React. </p>
+                <br />
+                <p className={classes.ptag}>In order to use the site you need to close https://github.com/EinarLogiOskars/dvdrental-python.git 
+                and run the docker-compose file. Without it this site will not function. </p>
+                <br />
+                <p className={classes.ptag}>Next you will need to register a user, in order to do so click the link below!</p>
                 <br />
                 <NavLink to={'/register'}>Get started!</NavLink>
             </div>
