@@ -4,7 +4,7 @@ This project is a WIP. I started this project to be used as a frontend for a DVD
 
 ## Usage
 
-To get functionality for this website you will need to pull: https://github.com/EinarLogiOskars/dvdrental-python
+To get functionality for this website you will need to pull: https://github.com/EinarLogiOskars/dvdrental-python \
 This repo is a docker app containing a Postgres database and a Python Flask backend.
 
 ### `npm start`
