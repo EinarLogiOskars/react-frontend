@@ -1,4 +1,4 @@
-# React frontend
+# React frontend  ---  WIP
 
 This project is a WIP. I started this project to be used as a frontend for a DVD rental app I am creating using Python Flask.
 
