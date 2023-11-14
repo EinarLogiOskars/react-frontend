@@ -11,6 +11,7 @@ import Logout from './Logout'
 import ProSidebar from './ProSidebar'
 import Dashboard from './Dashboard'
 import Film from './Film'
+import AddFilm from './AddFilm'
 
 
-export { Home, FilmList, Actors, Customers, About, Contact, Navbar, Login, Register, Logout, ProSidebar, Dashboard, Film }
+export { Home, FilmList, Actors, Customers, About, Contact, Navbar, Login, Register, Logout, ProSidebar, Dashboard, Film, AddFilm }

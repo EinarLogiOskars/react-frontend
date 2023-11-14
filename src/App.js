@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom'
-import { Navbar, Home, FilmList, Actors, Customers, About, Contact, Register, Login, Logout, ProSidebar, Dashboard, Film } from './component'
+import { Navbar, Home, FilmList, Actors, Customers, About, Contact, Register, Login, Logout, ProSidebar, Dashboard, Film, AddFilm } from './component'
 import useToken from './hooks/useToken';
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import classes from './styles/app.module.css'
@@ -40,9 +40,14 @@ function App() {
               <Route path="/register" element={ <Register /> }/>
               <Route path="/login" element={ <Login setToken={setToken}/> }/>
               <Route path="/logout" element={ <Logout /> }/>
-              <Route path="/dashboard" element={ <Dashboard /> }/>
+              <Route element={ <ProtectRoutes /> }>
+                <Route path="/dashboard" element={ <Dashboard /> }/>
+              </Route>
               <Route element={ <ProtectRoutes /> }>
                 <Route path="/film" element={ <Film />}/>
+              </Route>
+              <Route element={ <ProtectRoutes /> }>
+                <Route path="/add_film" element={ <AddFilm />}/>
               </Route>
             </Routes>
           </div>

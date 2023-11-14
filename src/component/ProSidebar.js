@@ -26,7 +26,8 @@ const ProSidebar = (props) => {
                 <SubMenu label="Films" icon={<LocalMoviesIcon />}>
                     <MenuItem
                         component={<NavLink to="/films" />}>Film list</MenuItem>
-                    <MenuItem>Add film</MenuItem>
+                    <MenuItem
+                        component={<NavLink to="/add_film" />}>Add film</MenuItem>
                 </SubMenu>
                 <SubMenu label="Customers" icon={<ContactPageIcon />}>
                     <MenuItem 

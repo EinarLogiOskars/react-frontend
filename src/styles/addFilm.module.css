@@ -1,0 +1,20 @@
+.mainContainer {
+    padding: 15px;
+}
+
+.inputField {
+    width: 400px;
+}
+
+.form {
+    display: flex;
+    flex-direction: row;
+}
+
+.formDiv1 {
+    margin-left: 20px;
+}
+
+.formDiv2 {
+    margin-left: 80px;
+}
