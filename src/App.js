@@ -27,6 +27,7 @@ function App() {
               {renderSidebar()}
             </ProSidebarProvider>
             <Routes>
+              <Route path="/" element={ <Home /> } />
               <Route path="/react-frontend" element={ <Home /> } />
               <Route element={ <ProtectRoutes /> }>
                 <Route path="/films" element={ <FilmList /> } />
