@@ -7,6 +7,7 @@ import useToken from "../hooks/useToken";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
+import { Form } from "react-router-dom";
 
 
 function AddFilm() {
@@ -115,8 +116,15 @@ function AddFilm() {
     const [categories, setCategories] = useState();
     const [selectedActors, setSelectedActors] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
-    let selectedCats = [];
-    let selectedActs = [];
+    const [title, setTitle] = useState();
+    const [description, setDescription] = useState();
+    const [length, setLength] = useState();
+    const [releaseYear, setReleaseYear] = useState();
+    const [language, setLanguage] = useState();
+    const [rating, setRating] = useState();
+    const [rentalDuration, setRentalDuration] = useState();
+    const [rentalRate, setRentalRate] = useState();
+    const [replacementCost, setReplacementCost] = useState();
 
     useEffect(() => {
         axios
@@ -147,9 +155,8 @@ function AddFilm() {
         selectToolbarPlacement: 'none',
         searchAlwaysOpen: true,
         sortThirdClickReset: true,
-        onRowsSelect: (allRowsSelected) => {
-            //setSelectedActors([allRowsSelected])
-            //selectedActs = allRowsSelected
+        onRowsSelect: (curRowSelected, allRowsSelected) => {
+            setSelectedActors([...allRowsSelected])
           }
     };
     
@@ -166,29 +173,49 @@ function AddFilm() {
         searchAlwaysOpen: true,
         sortThirdClickReset: true,
         onRowsSelect: (curRowSelected, allRowsSelected) => {
-            setSelectedCategories([...selectedCategories, categories[curRowSelected[0].index] ])
-            selectedCats = allRowsSelected
+            setSelectedCategories([...allRowsSelected])
           }
     };
 
     if (isLoadingActors && isLoadingCategories) {
         return (
             <div>
-                <p>Loading!!</p>
+                <p>Loading...</p>
             </div>
         )
     }
 
     const onButtonClick = () => {
-        console.log('Click!')
-        //console.log(selectedActors)
-        console.log(selectedCategories)
+
+        const actor = [];
+        const category = [];
+        
         for (let i = 0; i < selectedActors.length; i++) {
-            //console.log(actors[selectedActors[i]])
+            actor.push(selectedActors[i]?.index + 1);
         }
         for (let i = 0; i < selectedCategories.length; i++) {
-            //console.log(categories[selectedCategories[i].curRowSelected.index])
+            category.push(selectedCategories[i]?.index + 1);
         }
+
+        const form = new FormData();
+        form.append('title', title);
+        form.append('description', description);
+        form.append('release_year', releaseYear);
+        form.append('language_id', language);
+        form.append('rental_duration', rentalDuration);
+        form.append('rental_rate', rentalRate);
+        form.append('length', length);
+        form.append('replacement_cost', replacementCost);
+        form.append('rating', rating);
+        form.append('category', category);
+        form.append('actor', actor);
+
+        axios
+            .post('http://localhost:8000/films/add', form, { headers: {"Authorization" : `Bearer ${token}`} })
+            .then((response) => {
+                console.log(response);
+            });
+
     };
 
     return (
@@ -204,6 +231,7 @@ function AddFilm() {
                                 label="Title" 
                                 variant="outlined" 
                                 margin="normal"
+                                onChange={ev => setTitle(ev.target.value)}
                                 className={ classes.inputField1 } />
                         <TextField
                                 id="release_year" 
@@ -214,6 +242,7 @@ function AddFilm() {
                                 type="number"
                                 defaultValue='1900'
                                 InputProps={{ inputProps: { min: 1900, max: 2023 } }}
+                                onChange={ev => setReleaseYear(ev.target.value)}
                                 className={ classes.inputField1 } />
                         <TextField 
                                 id="lenght" 
@@ -222,6 +251,7 @@ function AddFilm() {
                                 variant="outlined" 
                                 margin="normal" 
                                 helperText='Length in minutes'
+                                onChange={ev => setLength(ev.target.value)}
                                 className={ classes.inputField1 } />
                         <TextField 
                                 id="description" 
@@ -231,6 +261,7 @@ function AddFilm() {
                                 multiline
                                 rows={3} 
                                 margin="normal"
+                                onChange={ev => setDescription(ev.target.value)}
                                 className={ classes.inputField1 } />
                         <TextField 
                                 id="language" 
@@ -239,6 +270,7 @@ function AddFilm() {
                                 label="Language" 
                                 defaultValue="" 
                                 margin="normal"
+                                onChange={ev => setLanguage(ev.target.value)}
                                 className={ classes.inputField1 }>
                                     {languages.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
@@ -253,6 +285,7 @@ function AddFilm() {
                                 label="Rating" 
                                 margin="normal"
                                 defaultValue=''
+                                onChange={ev => setRating(ev.target.value)}
                                 className={ classes.inputField1 }>
                                     {ratings.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
@@ -291,6 +324,7 @@ function AddFilm() {
                                 variant="outlined" 
                                 margin="normal"
                                 helperText='Rental duration in days'
+                                onChange={ev => setRentalDuration(ev.target.value)}
                                 className={ classes.inputField2 } />
                         <TextField 
                                 id="rental_rate" 
@@ -298,6 +332,7 @@ function AddFilm() {
                                 label="Rental Rate" 
                                 variant="outlined" 
                                 margin="normal" 
+                                onChange={ev => setRentalRate(ev.target.value)}
                                 className={ classes.inputField2 } />
                         <TextField 
                                 id="replacement_cost" 
@@ -305,6 +340,7 @@ function AddFilm() {
                                 label="Replacement Cost" 
                                 variant="outlined" 
                                 margin="normal" 
+                                onChange={ev => setReplacementCost(ev.target.value)}
                                 className={ classes.inputField2 } />
                         <Button
                             variant="contained"
