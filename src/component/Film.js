@@ -7,18 +7,16 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 
 function Film () {
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading1, setLoading1] = useState(true);
+    const [isLoading2, setLoading2] = useState(true);
     const [film, setFilm] = useState();
+    const [filmInfo, setFilmInfo] = useState();
 
     const nav = useNavigate();
-    
     const { token } = useToken();
 
     const location = useLocation();
-
     let filmId = location.state.filmId;
-
-    const filmInfo = location.state.film;
 
     useEffect(() => {
         try {
@@ -26,14 +24,20 @@ function Film () {
                 .get("http://localhost:8000/films/film/" + filmId, { headers: {"Authorization" : `Bearer ${token}`} })
                 .then((response) => {
                     setFilm(response.data)
-                    setLoading(false)
+                    setLoading1(false)
+            });
+            axios
+                .get("http://localhost:8000/films/film_list/" + filmId, { headers: {"Authorization" : `Bearer ${token}`} })
+                .then((response) => {
+                    setFilmInfo(response.data)
+                    setLoading2(false)
                 });
-        } catch (err) {
-            console.log(err)
-        }
+            } catch (err) {
+                console.log(err)
+            }
     }, []);
     
-    if(isLoading) {
+    if(isLoading1 || isLoading2) {
         return <p>loading...</p>
     }
 

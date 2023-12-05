@@ -69,7 +69,7 @@ const Register = () => {
             form.append('first_name', firstName)
             form.append('last_name', lastName)
             form.append('email', email)
-            form.append('username', username)
+            form.append('username', username.toLowerCase())
             form.append('password', password)
 
             axios.post('http://localhost:8000/auth/register', form).then((response) => {

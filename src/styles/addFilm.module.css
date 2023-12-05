@@ -22,3 +22,8 @@
 .formDiv2 {
     margin-left: 80px;
 }
+
+.errorLabel {
+    color: red;
+    font-size: 12px;
+  }

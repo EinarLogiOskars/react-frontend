@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from '../styles/login.module.css';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast'
 
 const Login = (props) => {
     const nav = useNavigate();
@@ -27,7 +28,7 @@ const Login = (props) => {
         
         if (username !== "" && password !== ""){
             const form = new FormData();
-            form.append("username", username)
+            form.append("username", username.toLowerCase())
             form.append("password", password)
             axios.post("http://localhost:8000/auth/login", form)
                 .then((response) => {
@@ -37,6 +38,7 @@ const Login = (props) => {
                     console.log(error.response)
                     console.log(error.response.status)
                     console.log(error.response.headers)
+                    toast.error('Incorrect credentials!')
                 })
         }
 
@@ -44,6 +46,7 @@ const Login = (props) => {
 
     return (
         <div className={style.mainContainer}>
+            <Toaster />
                 <div className={style.titleContainer}>
                     <div>Login</div>
                 </div>

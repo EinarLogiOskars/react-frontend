@@ -7,12 +7,14 @@ import useToken from "../hooks/useToken";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
-import { Form } from "react-router-dom";
-
+import { InputAdornment } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function AddFilm() {
 
     const { token } = useToken();
+    const nav = useNavigate();
 
     const languages = [
         {
@@ -116,15 +118,116 @@ function AddFilm() {
     const [categories, setCategories] = useState();
     const [selectedActors, setSelectedActors] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [catsValid, setCatsValid] = useState();
+
     const [title, setTitle] = useState();
+    const titleRegex = new RegExp('^.{1,50}$');
+    const [isTitleInvalid, setTitleInvalid] = useState(false);
+    const validateTitle = (title) => {
+        if (!titleRegex.test(title)) {
+            setTitleInvalid(true);
+        } else {
+            setTitle(title);
+            setTitleInvalid(false);
+        }
+    }
+
     const [description, setDescription] = useState();
+    const [isDescInvalid, setDescInvalid] = useState(false);
+    const validateDesc = (description) => {
+        if (!description?.length > 0) {
+            setDescInvalid(true);
+        } else {
+            setDescription(description);
+            setDescInvalid(false);
+        }
+    }
+
     const [length, setLength] = useState();
+    const lengthRegex = new RegExp('^[1-9][0-9]{0,2}$');
+    const [isLengthInvalid, setLengthInvalid] = useState(false);
+    const validateLength = (length) => {
+        if (!lengthRegex.test(length)) {
+            setLengthInvalid(true);
+        } else {
+            setLength(length);
+            setLengthInvalid(false);
+        }
+    }
+
     const [releaseYear, setReleaseYear] = useState();
+    const yearRegex = new RegExp('^(19[0-9][0-9]|20[0-1][0-9]|202[0-3])$');
+    const [relYearInvalid, setRelYearInvalid] = useState(false);
+    const validateYear = (year) => {
+        if (!yearRegex.test(year) || year === "1900") {
+            setRelYearInvalid(true);
+        } else {
+            setReleaseYear(year);
+            setRelYearInvalid(false);
+        }
+    }
+
     const [language, setLanguage] = useState();
+    const [isLanguageNotChosen, setIsLanguageNotChosen] = useState(false);
+    const validateLanguage = (language) => {
+        if (language === '') {
+            setIsLanguageNotChosen(true);
+        } else {
+            setLanguage(language);
+            setIsLanguageNotChosen(false);
+        }
+    }
+
+
     const [rating, setRating] = useState();
+    const [isRatingNotChosen, setIsRatingNoteChosen] = useState(false);
+    const validateRating = (rating) => {
+        if (rating === '') {
+            setIsRatingNoteChosen(true);
+        } else {
+            setRating(rating);
+            setIsRatingNoteChosen(false);
+        }
+    }
+
     const [rentalDuration, setRentalDuration] = useState();
+    const durationRegex = new RegExp('^[1-7]$');
+    const [isRentDurationInvalid, setRentDurationInvalid] = useState(false);
+    const validateRentDur = (rentalDuration) => {
+        if (!durationRegex.test(rentalDuration)) {
+            setRentDurationInvalid(true);
+        } else {
+            setRentalDuration(rentalDuration);
+            setRentDurationInvalid(false);
+        }
+    }
+
     const [rentalRate, setRentalRate] = useState();
+    const rentRateRegex = new RegExp('^[1-9][0-9]{0,1}(\\.[0-9]?[1-9])?$');
+    const [isRentRateInvalid, setRentRateInvalid] = useState(false);
+    const validateRentRate = (rentalRate) => {
+        if (!rentRateRegex.test(rentalRate)) {
+            setRentRateInvalid(true);
+        } else {
+            setRentalRate(rentalRate);
+            setRentRateInvalid(false);
+        }
+    }
+
     const [replacementCost, setReplacementCost] = useState();
+    const replaceCostRegex = new RegExp('^[1-9][0-9]{0,2}(\\.[0-9]?[1-9])?$');
+    const [isReplaceCostInvalid, setReplaceCostInvalid] = useState(false);
+    const validateReplaceCost = (replacementCost) => {
+        if (!replaceCostRegex.test(replacementCost)) {
+            setReplaceCostInvalid(true);
+        } else {
+            setReplacementCost(replacementCost);
+            setReplaceCostInvalid(false);
+        }
+    }
+
+    const [errorMessageCat, setErrorMessageCat] = useState('');
+    const [errorMessageAct, setErrorMessageAct] = useState('');
 
     useEffect(() => {
         axios
@@ -132,15 +235,13 @@ function AddFilm() {
             .then((response) => {
                 setActors(response.data);
                 setLoadingActors(false);
-                console.log(actors)
             });
-            axios
-                .get('http://localhost:8000/category/list', { headers: {'Authorization': `Bearer ${token}`} })
-                .then((response) => {
-                    setCategories(response.data);
-                    setLoadingCategories(false);
-                    console.log(categories)
-                });
+        axios
+            .get('http://localhost:8000/category/list', { headers: {'Authorization': `Bearer ${token}`} })
+            .then((response) => {
+                setCategories(response.data);
+                setLoadingCategories(false);
+            });
     }, []);
 
     const optionsActors = {
@@ -156,7 +257,7 @@ function AddFilm() {
         searchAlwaysOpen: true,
         sortThirdClickReset: true,
         onRowsSelect: (curRowSelected, allRowsSelected) => {
-            setSelectedActors([...allRowsSelected])
+            setSelectedActors([...allRowsSelected]);
           }
     };
     
@@ -173,7 +274,7 @@ function AddFilm() {
         searchAlwaysOpen: true,
         sortThirdClickReset: true,
         onRowsSelect: (curRowSelected, allRowsSelected) => {
-            setSelectedCategories([...allRowsSelected])
+            setSelectedCategories([...allRowsSelected]);
           }
     };
 
@@ -197,6 +298,18 @@ function AddFilm() {
             category.push(selectedCategories[i]?.index + 1);
         }
 
+        if (actor.length === 0) {
+            setErrorMessageAct('Must choose at least one.');
+        } else {
+            setErrorMessageAct('');
+        }
+        if (category.length === 0 || category.length > 1) {
+            setErrorMessageCat('Must choose one. No more, no less!');
+        } else {
+            setErrorMessageCat('');
+            setCatsValid(true)
+        } 
+
         const form = new FormData();
         form.append('title', title);
         form.append('description', description);
@@ -210,17 +323,36 @@ function AddFilm() {
         form.append('category', category);
         form.append('actor', actor);
 
-        axios
-            .post('http://localhost:8000/films/add', form, { headers: {"Authorization" : `Bearer ${token}`} })
-            .then((response) => {
-                console.log(response);
-            });
+
+
+        if (!isTitleInvalid && !isDescInvalid && !relYearInvalid && !isLanguageNotChosen && !isRentDurationInvalid && !isRentRateInvalid && !isLengthInvalid && !isReplaceCostInvalid && !isRatingNotChosen && catsValid && !actor.length == 0) {
+            axios
+                .post('http://localhost:8000/films/add', form, { headers: {"Authorization" : `Bearer ${token}`} })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status === 201) {
+                        nav('/film', {
+                            state: {
+                                filmId: response.data
+                            }
+                        })
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            toast.error('Please verify the entered information!');
+        }
+
+
 
     };
 
     return (
         <div className={ classes.mainContainer }>
             <form className={ classes.form }>
+                <Toaster />
                 <div>
                     <Stack spacing={3}
                             marginLeft={5}>
@@ -231,7 +363,10 @@ function AddFilm() {
                                 label="Title" 
                                 variant="outlined" 
                                 margin="normal"
-                                onChange={ev => setTitle(ev.target.value)}
+                                required
+                                error={ isTitleInvalid }
+                                helperText={ isTitleInvalid ? 'Please enter a title. Min length: 1 - Max length: 50' : '' }
+                                onBlur={ev => validateTitle(ev.target.value)}
                                 className={ classes.inputField1 } />
                         <TextField
                                 id="release_year" 
@@ -239,19 +374,24 @@ function AddFilm() {
                                 label="Release year" 
                                 variant="outlined" 
                                 margin="normal"
-                                type="number"
-                                defaultValue='1900'
-                                InputProps={{ inputProps: { min: 1900, max: 2023 } }}
-                                onChange={ev => setReleaseYear(ev.target.value)}
+                                required
+                                error={ relYearInvalid }
+                                helperText={ relYearInvalid ? 'Please enter a year between 1901 and 2023' : '' }
+                                onBlur={ev => validateYear(ev.target.value)}
                                 className={ classes.inputField1 } />
                         <TextField 
                                 id="lenght" 
                                 name="length" 
-                                label="Length" 
+                                label="Length"
                                 variant="outlined" 
                                 margin="normal" 
-                                helperText='Length in minutes'
-                                onChange={ev => setLength(ev.target.value)}
+                                required
+                                error={ isLengthInvalid }
+                                helperText={ isLengthInvalid ? 'Please enter length in minutes. Max: 999' : '' }
+                                onBlur={ev => validateLength(ev.target.value)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">Minutes</InputAdornment>
+                                }}
                                 className={ classes.inputField1 } />
                         <TextField 
                                 id="description" 
@@ -261,7 +401,10 @@ function AddFilm() {
                                 multiline
                                 rows={3} 
                                 margin="normal"
-                                onChange={ev => setDescription(ev.target.value)}
+                                required
+                                error={ isDescInvalid }
+                                helperText={ isDescInvalid ? 'Please enter a description' : ''}
+                                onBlur={ev => validateDesc(ev.target.value)}
                                 className={ classes.inputField1 } />
                         <TextField 
                                 id="language" 
@@ -270,7 +413,10 @@ function AddFilm() {
                                 label="Language" 
                                 defaultValue="" 
                                 margin="normal"
-                                onChange={ev => setLanguage(ev.target.value)}
+                                required
+                                error={ isLanguageNotChosen }
+                                helperText={ isLanguageNotChosen ? 'Please choose a language' : ''}
+                                onBlur={ev => validateLanguage(ev.target.value)}
                                 className={ classes.inputField1 }>
                                     {languages.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
@@ -285,7 +431,10 @@ function AddFilm() {
                                 label="Rating" 
                                 margin="normal"
                                 defaultValue=''
-                                onChange={ev => setRating(ev.target.value)}
+                                required
+                                error={ isRatingNotChosen }
+                                helperText={ isRatingNotChosen ? 'Please choose a rating' : ''}
+                                onBlur={ev => validateRating(ev.target.value)}
                                 className={ classes.inputField1 }>
                                     {ratings.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
@@ -304,6 +453,7 @@ function AddFilm() {
                             data={actors}
                             columns={columnsActors}
                             options={optionsActors} />
+                        <label className={ classes.errorLabel }>{ errorMessageAct }</label>
                         <br />
                         <label>Categories:</label>
                         <MUIDataTable
@@ -311,6 +461,7 @@ function AddFilm() {
                             data={categories}
                             columns={columnsCategories}
                             options={optionsCategories} />
+                        <label className={ classes.errorLabel }>{ errorMessageCat }</label>
                     </Stack>
                 </div>
                 <div>
@@ -323,8 +474,13 @@ function AddFilm() {
                                 label="Rental Duration" 
                                 variant="outlined" 
                                 margin="normal"
-                                helperText='Rental duration in days'
-                                onChange={ev => setRentalDuration(ev.target.value)}
+                                required
+                                error={ isRentDurationInvalid }
+                                helperText={ isRentDurationInvalid ? 'Please choose a rental duration. 1-7 days.' : ''}
+                                onBlur={ev => validateRentDur(ev.target.value)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">Days</InputAdornment>
+                                }}
                                 className={ classes.inputField2 } />
                         <TextField 
                                 id="rental_rate" 
@@ -332,7 +488,13 @@ function AddFilm() {
                                 label="Rental Rate" 
                                 variant="outlined" 
                                 margin="normal" 
-                                onChange={ev => setRentalRate(ev.target.value)}
+                                required
+                                error={ isRentRateInvalid }
+                                helperText={ isRentRateInvalid ? <>Please enter the rental rate.<br/>1 - 99.99$</> : ''}
+                                onBlur={ev => validateRentRate(ev.target.value)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="start">$</InputAdornment>
+                                }}
                                 className={ classes.inputField2 } />
                         <TextField 
                                 id="replacement_cost" 
@@ -340,7 +502,13 @@ function AddFilm() {
                                 label="Replacement Cost" 
                                 variant="outlined" 
                                 margin="normal" 
-                                onChange={ev => setReplacementCost(ev.target.value)}
+                                required
+                                error={ isReplaceCostInvalid }
+                                helperText={ isReplaceCostInvalid ? <>Please enter replacement cost.<br/>1 - 999.99$</> : ''}
+                                onBlur={ev => validateReplaceCost(ev.target.value)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="start">$</InputAdornment>
+                                }}
                                 className={ classes.inputField2 } />
                         <Button
                             variant="contained"
