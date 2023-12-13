@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import style from '../styles/login.module.css';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast'
+import { NavLink } from "react-router-dom"
 
 const Login = (props) => {
     const nav = useNavigate();
@@ -77,6 +78,9 @@ const Login = (props) => {
                             type='button'
                             onClick={onButtonClick}
                             value={'Log in'} />
+                    </div>
+                    <div className={style.buttonContainer}>
+                        <NavLink to={'/Register'}>Not registered yet? Register</NavLink>
                     </div>
                 </div>
         </div>
